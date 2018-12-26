@@ -1,0 +1,71 @@
+body {
+  box-sizing: border-box;
+  background-color: #ffc4cd;
+}
+
+header, .table, form {
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
+input[type=text]:focus,
+input[type=email]:focus {
+  outline: none;
+  border: 1px solid lightpink;
+  box-shadow: 0 0 3px lightpink;
+}
+
+.error {
+  color: red;
+}
+
+.fa-check-circle {
+  color: green;
+}
+
+header {
+  margin: 0.9rem auto;
+  padding: 0.6rem 0;
+  text-align: center;
+  border-radius: 9px;
+}
+header h1 {
+  font-size: 1.8em;
+  font-weight: bold;
+}
+header div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+header div input, header div button {
+  margin: 6px;
+}
+
+.table {
+  width: 1px;
+  margin: 0 auto;
+  border-radius: 15px;
+}
+.table th:hover {
+  cursor: pointer;
+}
+.table tr {
+  width: 1px;
+}
+
+form {
+  padding: 1.5rem;
+  border-radius: 15px;
+}
+
+.modal .modal-content {
+  padding: 0.75rem;
+  text-align: center;
+}
+.modal .modal-btns-container {
+  padding-top: 0.75rem;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+/*# sourceMappingURL=styles.css.map */
