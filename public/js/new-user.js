@@ -37,7 +37,7 @@ $('#new-user-form').validate({
   submitHandler: function (form) {
     $.ajax({
         type: "POST",
-        url: "http://localhost:3000/api/users",
+        url: "/api/users",
         data: $(form).serialize(),
         success: function () {
           $('#modal-save-new-user').modal('show')

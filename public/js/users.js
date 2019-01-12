@@ -39,7 +39,7 @@ function appendUsers(users) {
 function filter() {
   const search = $('#search-input').val()
   $.ajax({
-    url: `http://localhost:3000/api/users/?q=${search}`,
+    url: `/api/users/?q=${search}`,
     success: function(data) {
       users = data
   
@@ -53,7 +53,7 @@ function filter() {
 }
 
 $.ajax({
-  url: 'http://localhost:3000/api/users',
+  url: '/api/users',
   success: function(data) {
     users = data
     appendUsers(users)
@@ -82,19 +82,19 @@ $('.table-header').on('click', function() {
 
 $(document).ajaxComplete(function() {
   $('.edit-btn').on('click', function() {
-    const id = $(this).parent().parent()[0].id
+    const id = $(this).parent().parent().attr('id')
     location.href = `/users/edit?id=${id}`
   })
 
   $('.delete-btn').on('click', function() {
-   const id = $(this).parent().parent()[0].id
+   const id = $(this).parent().parent().attr('id')
    $('#modal-delete').data('id', id)
   })
 
   $('#btn-delete-user').on('click', function() {
     const id = $('#modal-delete').data('id')
     $.ajax({
-      url: `http://localhost:3000/api/users/${id}`,
+      url: `/api/users/${id}`,
       type: "DELETE",
       success: function() {
         $(`#${id}`).remove()

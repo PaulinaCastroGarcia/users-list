@@ -6,7 +6,7 @@ const url_string = window.location.href
 const url = new URL(url_string)
 const id = url.searchParams.get("id")
 
-$.ajax(`http://localhost:3000/api/user/${id}`)
+$.ajax(`/api/user/${id}`)
 .done(function(data) {
   $('#name').val(data.name)
   $('#surname').val(data.surname)
@@ -14,28 +14,51 @@ $.ajax(`http://localhost:3000/api/user/${id}`)
   $('#email').val(data.email) 
 })
 
-$('#btn-save-edit').on('click', function(e) {
-  e.preventDefault()
-  const name =  $('#name').val()
-  const surname =  $('#surname').val()
-  const phone =  $('#phone').val()
-  const email =  $('#email').val()
+$.validator.addMethod('customphone', function (value, element) {
+  return this.optional(element) || /^\d{10}$/.test(value)
+}, "Please enter a valid phone number")
 
-  $.ajax(`http://localhost:3000/api/users/${id}`, {
-    method: "PUT",
-    data: {
-      name: name,
-      surname: surname,
-      phone: phone,
-      email: email
+$('#edit-user-form').validate({
+  onfocusout: function (element) {
+    $(element).valid()
+  },
+  onkeyup: false,
+  rules: {
+    name: {
+      required: true,
+      maxlength: 30
     },
-    success: function() {
-      $('#modal-save-edited-user').modal('show')
-      setTimeout(function() {
-        location.href = '/users'
-      }, 1500)
+    surname: {
+      required: true,
+      maxlength: 30
+    },
+    phone: {
+      required: true,
+      customphone: true
+    },
+    email: {
+      required: true,
+      email: true
     }
-  })  
+  },
+  messages: {
+    phone: {
+      customphone: 'Please enter a valid phone number'
+    }
+  },
+  submitHandler: function (form) {
+    $.ajax({
+        type: "PUT",
+        url: `/api/users/${id}`,
+        data: $(form).serialize(),
+        success: function () {
+          $('#modal-save-edited-user').modal('show')
+          setTimeout(function() {
+            location.href = '/users'
+          }, 1500)
+        }
+    })
+  }
 })
 
 $('#btn-cancel-edit').on('click', function(e) {
