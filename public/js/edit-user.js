@@ -15,7 +15,8 @@ $.ajax(`/api/user/${id}`)
 })
 
 $.validator.addMethod('customphone', function (value, element) {
-  return this.optional(element) || /^\d{10}$/.test(value)
+  const internationalNumber = /([0-9\s\-]{7,})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?$/
+  return this.optional(element) || internationalNumber.test(value)
 }, "Please enter a valid phone number")
 
 $('#edit-user-form').validate({
@@ -56,6 +57,9 @@ $('#edit-user-form').validate({
           setTimeout(function() {
             location.href = '/users'
           }, 1500)
+        },
+        error: function() {
+          $('#modal-error').modal('show')
         }
     })
   }

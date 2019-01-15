@@ -3,7 +3,8 @@ $(document).ready(function(){
 })
 
 $.validator.addMethod('customphone', function (value, element) {
-  return this.optional(element) || /^\d{10}$/.test(value)
+  const internationalNumber = /([0-9\s\-]{7,})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?$/
+  return this.optional(element) || internationalNumber.test(value)
 }, "Please enter a valid phone number")
 
 $('#new-user-form').validate({
@@ -19,11 +20,13 @@ $('#new-user-form').validate({
     surname: {
       required: true,
       maxlength: 30
-    },
+    }
+    ,
     phone: {
       required: true,
       customphone: true
-    },
+    }
+    ,
     email: {
       required: true,
       email: true
@@ -39,11 +42,14 @@ $('#new-user-form').validate({
         type: "POST",
         url: "/api/users",
         data: $(form).serialize(),
-        success: function () {
+        success: function() {
           $('#modal-save-new-user').modal('show')
           setTimeout(function() {
             location.href = '/users'
           }, 1500)
+        },
+        error: function() {
+          $('#modal-error').modal('show')
         }
     })
   }

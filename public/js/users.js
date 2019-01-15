@@ -76,31 +76,35 @@ $('.table-header').on('click', function() {
   $('.user').remove()
   const key = $(this)[0].id
 
-  sortUsers(key, sortOrder)
-  appendUsers(users)
+  $.ajax({
+    url: '/api/users',
+    success: function(data) {
+      users = data
+      sortUsers(key,users)
+      appendUsers(users)
+    }
+  })
 })
 
-$(document).ajaxComplete(function() {
-  $('.edit-btn').on('click', function() {
-    const id = $(this).parent().parent().attr('id')
-    location.href = `/users/edit?id=${id}`
-  })
+$(document).on('click', '.edit-btn', function() {
+  const id = $(this).parent().parent().attr('id')
+  location.href = `/users/edit?id=${id}`
+})
 
-  $('.delete-btn').on('click', function() {
-   const id = $(this).parent().parent().attr('id')
-   $('#modal-delete').data('id', id)
-  })
+$(document).on('click', '.delete-btn', function() {
+  const id = $(this).parent().parent().attr('id')
+  $('#modal-delete').data('id', id)
+})
 
-  $('#btn-delete-user').on('click', function() {
-    const id = $('#modal-delete').data('id')
-    $.ajax({
-      url: `/api/users/${id}`,
-      type: "DELETE",
-      success: function() {
-        $(`#${id}`).remove()
-        $("header").css({'width':($("table").outerWidth()+'px')})
-        $('#modal-delete').modal('hide')
-      }
-    })
+$(document).on('click', '#btn-delete-user', function() {
+  const id = $('#modal-delete').data('id')
+  $.ajax({
+    url: `/api/users/${id}`,
+    type: "DELETE",
+    success: function() {
+      $(`#${id}`).remove()
+      $("header").css({'width':($("table").outerWidth()+'px')})
+      $('#modal-delete').modal('hide')
+    }
   })
 })

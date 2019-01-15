@@ -2,6 +2,7 @@ var express = require('express');
 var path = require('path');
 var fs = require('fs');
 var router = express.Router();
+const { check, validationResult } = require('express-validator/check');
 
 /* GET htmls */
 router.get('/users/new', function(req,res) {
@@ -59,8 +60,24 @@ router.get('/api/users', function(req, res, next) {
 })
 
 //add user
-router.post('/api/users', function(req, res, next) {
-  const user = req.body
+router.post('/api/users', [
+  check('name').isLength({ max: 29, min: 1 }),
+  check('surname').isLength({ max: 29, min: 1 }),
+  check('phone').matches(/([0-9\s\-]{7,})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?$/),
+  check('email').isEmail()
+], function (req, res, next) {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  const user = {
+    name: req.body.name,
+    surname: req.body.surname,
+    phone: req.body.phone,
+    email: req.body.email
+  }
+
   user.id = users.length == 0 ? 1 : users[users.length - 1].id + 1
  
   users.push(user)
@@ -84,10 +101,20 @@ router.delete('/api/users/:id', function(req, res, next) {
 })
 
 //edit user
-router.put('/api/users/:id', function(req, res, next) {
+router.put('/api/users/:id', [
+  check('name').isLength({ max: 29, min: 1 }),
+  check('surname').isLength({ max: 29, min: 1 }),
+  check('phone').matches(/([0-9\s\-]{7,})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?$/),
+  check('email').isEmail()
+], function (req, res, next) {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  } 
+  
   const id = req.params.id
 
-  for (let i = 0; i <users.length; i++) {
+  for (let i = 0; i < users.length; i++) {
     if (users[i].id == id) {
       const currentUser = users[i]
       changeUserKeysValues(currentUser)
