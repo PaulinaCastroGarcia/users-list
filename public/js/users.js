@@ -1,4 +1,4 @@
-$(document).ready(function(){
+$("table").ready(function(){
   $("header").css({'width':($("table").outerWidth()+'px')})
 })
 
@@ -47,7 +47,9 @@ function filter() {
       $('#search-input').val('')
   
       appendUsers(users)
-      $("header").css({'width':($("table").outerWidth()+'px')})
+      $("table").ready(function(){
+        $("header").css({'width':($("table").outerWidth()+'px')})
+      })
     }
   })
 }
