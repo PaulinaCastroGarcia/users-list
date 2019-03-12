@@ -11,3 +11,5 @@ This project is a users list where you can:
 - delete a user
 
 Each form is validated using jQuery Validation Plugin and express-validator
+
+![](gif.gif)

@@ -1,7 +1,3 @@
-$("table").ready(function(){
-  $("header").css({'width':($("table").outerWidth()+'px')})
-})
-
 let users
 let sortOrder = 'asc'
 
@@ -59,6 +55,9 @@ $.ajax({
   success: function(data) {
     users = data
     appendUsers(users)
+    $("table").ready(function(){
+      $("header").css({'width':($("table").outerWidth()+'px')})
+    })
   }
 })
 
